@@ -1,0 +1,43 @@
+{
+  "name": "stateful-dynamic-interval",
+  "version": "0.0.0",
+  "description": "Stateful Dynterval",
+  "main": "src/index.js",
+  "scripts": {
+    "build": "rollup -c",
+    "prepublish": "npm run build",
+    "test": "npm run build && mocha --compilers js:babel-core/register"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/slurmulon/stateful-dynamic-interval.git"
+  },
+  "keywords": [
+    "setInterval",
+    "interval",
+    "dynamic",
+    "stateful",
+    "time"
+  ],
+  "author": "MadHax, LLC <me@madhax.io>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/slurmulon/stateful-dynamic-interval/issues"
+  },
+  "homepage": "https://github.com/slurmulon/stateful-dynamic-interval#readme",
+  "dependencies": {
+    "dynamic-interval": "slurmulon/dynamic-interval"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-es2015-rollup": "^3.0.0",
+    "chai": "^4.1.1",
+    "chai-things": "^0.2.0",
+    "mocha": "^3.5.0",
+    "rollup": "^0.49.2",
+    "rollup-plugin-babel": "^3.0.2",
+    "rollup-plugin-json": "^2.3.0"
+  }
+}
