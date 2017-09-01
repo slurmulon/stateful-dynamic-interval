@@ -1,10 +1,7 @@
 import chai from 'chai'
-import chaiThings from 'chai-things'
 import { StatefulDynterval, states } from '../dist/bundle'
 
 const should = chai.should()
-
-chai.use(chaiThings)
 
 describe.only('StatefulDynterval', () => {
   describe('run', () => {
@@ -138,9 +135,8 @@ describe.only('StatefulDynterval', () => {
     })
 
     it('should call the run function', () => {
- 
+
     })
   })
-
 
 })
