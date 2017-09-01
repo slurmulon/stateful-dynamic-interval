@@ -59,6 +59,8 @@ export class StatefulDynterval {
 
 }
 
+export const setStatefulDynterval = (...args) => new StatefulDynterval(...args)
+
 export const STATES = {
   pristine : Symbol('pristine'),
   running  : Symbol('running'),
