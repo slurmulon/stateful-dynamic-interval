@@ -2,10 +2,10 @@ import setDynterval from 'dynamic-interval'
 
 export class StatefulDynterval {
 
-  constructor (step, wait, defer = false) {
+  constructor (step, wait, defer) {
     this.step  = step
     this.wait  = wait
-    this.state = states.pristine
+    this.state = STATES.pristine
     this.time  = { start: null, end: null, remaining: null, clock: null }
 
     if (!defer) this.run()
@@ -20,11 +20,11 @@ export class StatefulDynterval {
   run () {
     this.time.start = new Date()
     this.time.clock = setDynterval(this.next.bind(this), this.wait)
-    this.state = states.running
+    this.state = STATES.running
   }
 
   pause () {
-    if (this.state !== states.running) return
+    if (this.state !== STATES.running) return
 
     const wait = this.time.clock.context.wait || this.wait
     const elapsed = new Date() - this.time.start
@@ -32,20 +32,20 @@ export class StatefulDynterval {
     this.time.remaining = wait - elapsed
     this.time.clock.clear()
 
-    this.state = states.paused
+    this.state = STATES.paused
   }
 
   resume () {
-    if (this.state !== states.paused) return
+    if (this.state !== STATES.paused) return
 
-    this.state = states.resumed
+    this.state = STATES.resumed
 
     setTimeout(this.pickup, this.time.remaining)
   }
 
 	// callback for when the interval is resumed
   pickup () {
-    if (this.state !== states.resumed) return
+    if (this.state !== STATES.resumed) return
 
     this.step()
     this.run()
@@ -54,12 +54,12 @@ export class StatefulDynterval {
   clear () {
     this.time.clock.clear()
 
-    this.state = states.cleared
+    this.state = STATES.cleared
   }
 
 }
 
-export const states = {
+export const STATES = {
   pristine : Symbol('pristine'),
   running  : Symbol('running'),
   paused   : Symbol('paused'),

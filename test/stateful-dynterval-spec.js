@@ -1,5 +1,5 @@
 import chai from 'chai'
-import { StatefulDynterval, states } from '../dist/bundle'
+import { StatefulDynterval, STATES } from '../dist/bundle'
 
 const should = chai.should()
 
@@ -38,7 +38,7 @@ describe.only('StatefulDynterval', () => {
     }).timeout(2000)
 
     it('should set the state to running', () => {
-      interval.state.should.equal(states.running)
+      interval.state.should.equal(STATES.running)
     })
   })
 
@@ -81,7 +81,7 @@ describe.only('StatefulDynterval', () => {
     it('should set the state to paused', () => {
       interval.run()
       interval.pause()
-      interval.state.should.equal(states.paused)
+      interval.state.should.equal(STATES.paused)
     })
   })
 
@@ -102,7 +102,7 @@ describe.only('StatefulDynterval', () => {
       interval.pause()
       interval.resume()
 
-      interval.state.should.equal(states.resumed)
+      interval.state.should.equal(STATES.resumed)
     })
 
     it('should call the next function delayed, in milliseconds, by the remaining time', done => {
