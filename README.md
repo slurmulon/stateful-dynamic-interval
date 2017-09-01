@@ -13,7 +13,9 @@ A pauseable and resumeable timer built around [dynamic-interval](https://github.
 ```js
 import { StatefulDynterval } from 'stateful-dynamic-interval'
 
-const timer = new StatefulDynterval(step, duration, [delay])
+const step  = context => console.log('stepping', context)
+const wait  = 50
+const timer = new StatefulDynterval(step, wait)
 
 timer.pause()
 // ...
