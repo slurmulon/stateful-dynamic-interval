@@ -74,7 +74,7 @@ describe.only('Interval', () => {
 
       setTimeout(() => {
         interval.pause()
-        interval.time.remaining.should.be.within(245, 255)
+        interval.time.remaining.should.be.within(245, 256)
         done()
       }, 500)
     }).timeout(1000)
@@ -84,25 +84,53 @@ describe.only('Interval', () => {
     })
 
     it('should set the state to paused', () => {
-
+      interval.run()
+      interval.pause()
+      interval.state.should.equal(states.paused)
     })
   })
 
   describe('resume', () => {
-    it('should only run when the state is paused', () => {
+    let interval
 
+    beforeEach(() => {
+      interval = new Interval(config => config, 1000)
+    })
+
+    it('should only run when the state is paused', () => {
+      const result = interval.resume()
+
+      should.not.exist(result)
     })
 
     it('should set the state to resumed', () => {
+      interval.pause()
+      interval.resume()
 
+      interval.state.should.equal(states.resumed)
     })
 
-    it('should call the next function delayed, in milliseconds, by the remaining time', () => {
+    it('should call the next function delayed, in milliseconds, by the remaining time', done => {
+      setTimeout(() => {
+        let works = false
 
-    })
+        interval.pickup = () => works = true
+        interval.pause()
+
+        const remaining = interval.time.remaining
+
+        interval.resume()
+
+        setTimeout(() => {
+          works.should.be.true
+
+          done()
+        }, remaining + 1)
+      }, 500)
+    }).timeout(1500)
   })
 
-  describe('pickup', () => {
+  xdescribe('pickup', () => {
     it('should only run when in the resumed state', () => {
 
     })
