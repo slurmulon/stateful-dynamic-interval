@@ -16,8 +16,6 @@ describe.only('StatefulDynterval', () => {
 
         return Object.assign({ wait: config.wait * 2 })
       }, 50)
-
-      interval.run()
     })
 
     afterEach(() => stepped = false)
@@ -140,7 +138,7 @@ describe.only('StatefulDynterval', () => {
     })
 
     it('should call the run function', () => {
-      
+ 
     })
   })
 
