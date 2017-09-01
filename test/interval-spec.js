@@ -1,17 +1,17 @@
 import chai from 'chai'
 import chaiThings from 'chai-things'
-import { Interval, states } from '../dist/bundle'
+import { StatefulDynterval, states } from '../dist/bundle'
 
 const should = chai.should()
 
 chai.use(chaiThings)
 
-describe.only('Interval', () => {
+describe.only('StatefulDynterval', () => {
   describe('run', () => {
     let interval, stepped
 
     beforeEach(() => {
-      interval = new Interval(config => {
+      interval = new StatefulDynterval(config => {
         stepped = true
 
         return Object.assign({ wait: config.wait * 2 })
@@ -51,7 +51,7 @@ describe.only('Interval', () => {
     let interval, stepped
 
     beforeEach(() => {
-      interval = new Interval(config => {
+      interval = new StatefulDynterval(config => {
         stepped = true
 
         console.log('[pause] stepping', config)
@@ -94,7 +94,7 @@ describe.only('Interval', () => {
     let interval
 
     beforeEach(() => {
-      interval = new Interval(config => config, 1000)
+      interval = new StatefulDynterval(config => config, 1000)
     })
 
     it('should only run when the state is paused', () => {

@@ -1,6 +1,6 @@
 import setDynterval from 'dynamic-interval'
 
-export class Interval {
+export class StatefulDynterval {
 
   constructor (step, wait, defer = false) {
     this.step  = step
