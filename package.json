@@ -2,7 +2,7 @@
   "name": "stateful-dynamic-interval",
   "version": "0.0.0",
   "description": "Stateful Dynterval",
-  "main": "src/index.js",
+  "main": "dist/bundle.js",
   "scripts": {
     "build": "rollup -c",
     "prepublish": "npm run build",
