@@ -63,7 +63,6 @@ describe.only('StatefulDynterval', () => {
       should.not.exist(result)
     })
 
-    // TODO: create a similar test for ensuring that 
     it('should set the remaining time to the current time minus the starting time', done => {
       interval.run()
 
@@ -123,6 +122,8 @@ describe.only('StatefulDynterval', () => {
         }, remaining + 1)
       }, 500)
     }).timeout(1500)
+
+    // TODO: test pausing on an interval with a duration longer and shorter than the original interval (this.wait)
   })
 
   xdescribe('pickup', () => {
