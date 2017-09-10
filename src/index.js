@@ -23,6 +23,7 @@ export class StatefulDynterval {
     const context = this.step(config)
 
     // TODO: can probably eliminate the need for this by supporting IEI (immediately invoked interval) in `dynamic-interval`
+    // TODO: experiment with only doing this if `config` is `null`
     this.time.start = new Date()
     this.time.clock.context = context
 
@@ -44,8 +45,6 @@ export class StatefulDynterval {
     this.time.remaining = wait - elapsed
     this.time.clock.clear()
 
-    console.log('[stateful-dynterval] pause (wait, context.wait, elapsed, remaining)', wait, this.time.clock.context.wait, elapsed, this.time.remaining)
-
     this.state = STATES.paused
   }
 
@@ -53,8 +52,6 @@ export class StatefulDynterval {
     if (this.state !== STATES.paused) return
 
     this.state = STATES.resumed
-
-    console.log('[stateful-dynterval] resuming in', this.time.remaining)
 
     setTimeout(this.pickup.bind(this), this.time.remaining)
   }
