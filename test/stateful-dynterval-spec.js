@@ -124,6 +124,8 @@ describe.only('StatefulDynterval', () => {
     }).timeout(1500)
 
     // TODO: test pausing on an interval with a duration longer and shorter than the original interval (this.wait)
+
+    // TODO/FIXME: support and test pausing a resume (tricky, might need to introduce `StatefulTimeout`)
   })
 
   xdescribe('pickup', () => {
