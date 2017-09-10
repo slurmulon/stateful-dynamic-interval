@@ -56,7 +56,6 @@ export class StatefulDynterval {
     setTimeout(this.pickup.bind(this), this.time.remaining)
   }
 
-  // callback for when the interval is resumed
   pickup () {
     if (this.state !== STATES.resumed) return
 
