@@ -11,22 +11,35 @@ export class StatefulDynterval {
     if (!defer) this.run()
   }
 
-  next (config) {
-    this.time.start = new Date()
+  get context () {
+    if (this.time.clock) {
+      return this.time.clock.context
+    }
 
-    return this.step(config)
+    return { wait: this.wait, state: this.state }
+  }
+
+  next (config) {
+    const context = this.step(config)
+
+    // TODO: can probably eliminate the need for this by supporting IEI (immediately invoked interval) in `dynamic-interval`
+    // TODO: experiment with only doing this if `config` is `null`
+    this.time.start = new Date()
+    this.time.clock.context = context
+
+    return context
   }
 
   run () {
     this.time.start = new Date()
-    this.time.clock = setDynterval(this.next.bind(this), this.wait)
+    this.time.clock = setDynterval(this.next.bind(this), this.context.wait) // TODO: play with just `this.context`
     this.state = STATES.running
   }
 
   pause () {
     if (this.state !== STATES.running) return
 
-    const wait = this.time.clock.context.wait || this.wait
+    const wait    = this.context.wait
     const elapsed = new Date() - this.time.start
 
     this.time.remaining = wait - elapsed
