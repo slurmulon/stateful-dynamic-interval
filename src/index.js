@@ -32,7 +32,7 @@ export class StatefulDynterval {
 
   run () {
     this.time.start = new Date()
-    this.time.clock = setDynterval(this.next.bind(this), this.context.wait)
+    this.time.clock = setDynterval(this.next.bind(this), this.context.wait) // TODO: play with just `this.context`
     this.state = STATES.running
   }
 
