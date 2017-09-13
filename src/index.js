@@ -37,6 +37,7 @@ export class StatefulDynterval {
   }
 
   // FIXME: if you pause too close to the next step the interval keeps going
+  // - replacing `this.time.clock.context` with `this.time.clock.current.context` should resolve this. need to test thoroughly.
   pause () {
     if (this.state !== STATES.running) return
 
