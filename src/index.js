@@ -22,7 +22,7 @@ export class StatefulDynterval {
   next (config) {
     const context = this.step(config)
 
-    // TODO: can probably eliminate the need for this by supporting IEI (immediately invoked interval) in `dynamic-interval`
+    // TODO: can probably eliminate the need for this by supporting III (immediately invoked interval) in `dynamic-interval`
     // TODO: experiment with only doing this if `config` is `null`
     this.time.start = new Date()
     this.time.clock.context = context || config
