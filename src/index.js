@@ -7,6 +7,7 @@ export class StatefulDynterval {
     this.wait  = wait
     this.state = STATES.pristine
     this.time  = { start: null, end: null, remaining: null, clock: null }
+    this.subs  = []
 
     if (!defer) this.run()
   }
@@ -36,6 +37,13 @@ export class StatefulDynterval {
     this.state = STATES.running
   }
 
+  pickup () {
+    if (this.state !== STATES.resumed) return
+
+    this.next()
+    this.run()
+  }
+
   // FIXME: if you pause too close to the next step the interval keeps going
   // - replacing `this.time.clock.context` with `this.time.clock.current.context` should resolve this. need to test thoroughly.
   pause () {
@@ -48,6 +56,8 @@ export class StatefulDynterval {
     this.time.clock.clear()
 
     this.state = STATES.paused
+
+    this.emit('pause')
   }
 
   resume () {
@@ -56,19 +66,30 @@ export class StatefulDynterval {
     this.state = STATES.resumed
 
     setTimeout(this.pickup.bind(this), this.time.remaining)
-  }
 
-  pickup () {
-    if (this.state !== STATES.resumed) return
-
-    this.next()
-    this.run()
+    this.emit('resume')
   }
 
   clear () {
     this.time.clock.clear()
 
     this.state = STATES.cleared
+
+    this.emit('clear')
+  }
+
+  add (interval) {
+    if (!(interval instanceof StatefulDynterval)) {
+      throw new TypeError('Child intervals must be instances of StatefulDynterval')
+    }
+
+    this.subs.push(interval)
+
+    return this
+  }
+
+  emit (action) {
+    this.subs.forEach(sub => sub[action]())
   }
 
 }
