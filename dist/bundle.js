@@ -200,7 +200,7 @@ babelHelpers;
 var StatefulDynterval = function () {
   function StatefulDynterval(step) {
     var config = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-    var api = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : { setInterval: setInterval, clearInterval: clearInterval };
+    var api = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : { setInterval: setInterval, clearInterval: clearInterval, setTimeout: setTimeout, clearTimeout: clearTimeout };
     classCallCheck(this, StatefulDynterval);
 
     if (config.constructor === Number) {
@@ -279,7 +279,7 @@ var StatefulDynterval = function () {
 
       this.state = STATES.resumed;
 
-      setTimeout(this.pickup.bind(this), this.time.remaining);
+      this.api.setTimeout(this.pickup.bind(this), this.time.remaining);
 
       this.emit('resume');
 
@@ -317,7 +317,7 @@ var StatefulDynterval = function () {
           throw Error('Invalid action key, must be the name of a method defined on StatefulDynterval');
         }
 
-        sub[key]();
+        action();
       });
 
       return this;
