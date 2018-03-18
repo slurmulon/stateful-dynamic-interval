@@ -1,5 +1,3 @@
-// @see https://github.com/d3/d3-zoom/issues/27
-
 import json from 'rollup-plugin-json'
 import babel from 'rollup-plugin-babel'
 
