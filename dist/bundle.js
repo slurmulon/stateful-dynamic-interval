@@ -196,11 +196,8 @@ var createClass = function () {
 
 babelHelpers;
 
-// TODO: accept custom `setInterval` and `clearInterval`
 // TODO: consider integrating https://github.com/medikoo/event-emitter#unifyemitter1-emitter2-event-emitterunify
 var StatefulDynterval = function () {
-
-  // constructor (step, wait, defer) {
   function StatefulDynterval(step) {
     var config = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
     var api = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : { setInterval: setInterval, clearInterval: clearInterval };
