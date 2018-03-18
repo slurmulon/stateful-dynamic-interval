@@ -1,6 +1,5 @@
 import setDynterval from 'dynamic-interval'
 
-// TODO: accept custom `setInterval` and `clearInterval`
 // TODO: consider integrating https://github.com/medikoo/event-emitter#unifyemitter1-emitter2-event-emitterunify
 export class StatefulDynterval {
 
