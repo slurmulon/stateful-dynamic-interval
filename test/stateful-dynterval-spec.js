@@ -7,7 +7,7 @@ const should = chai.should()
 
 chai.use(sinonChai)
 
-describe.only('StatefulDynterval', () => {
+describe('StatefulDynterval', () => {
   describe('api', () => {
     it('should allow custom interval APIs to be provided', () => {
       let interval = new StatefulDynterval(() => {}, 25, { setInterval: sinon.spy(), clearInterval: sinon.spy() })
