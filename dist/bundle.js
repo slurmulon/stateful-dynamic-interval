@@ -196,6 +196,8 @@ var createClass = function () {
 
 babelHelpers;
 
+// TODO: accept custom `setInterval` and `clearInterval`
+// TODO: consider integrating https://github.com/medikoo/event-emitter#unifyemitter1-emitter2-event-emitterunify
 var StatefulDynterval = function () {
   function StatefulDynterval(step, wait, defer) {
     classCallCheck(this, StatefulDynterval);
@@ -204,6 +206,7 @@ var StatefulDynterval = function () {
     this.wait = wait;
     this.state = STATES.pristine;
     this.time = { start: null, end: null, remaining: null, clock: null };
+    this.subs = [];
 
     if (!defer) this.run();
   }
@@ -227,6 +230,16 @@ var StatefulDynterval = function () {
       this.time.clock = setDynterval(this.next.bind(this), this.context.wait); // TODO: play with just `this.context`
       this.state = STATES.running;
     }
+  }, {
+    key: 'pickup',
+    value: function pickup() {
+      if (this.state !== STATES.resumed) return;
+
+      this.next();
+      this.run();
+
+      return this;
+    }
 
     // FIXME: if you pause too close to the next step the interval keeps going
     // - replacing `this.time.clock.context` with `this.time.clock.current.context` should resolve this. need to test thoroughly.
@@ -243,6 +256,10 @@ var StatefulDynterval = function () {
       this.time.clock.clear();
 
       this.state = STATES.paused;
+
+      this.emit('pause');
+
+      return this;
     }
   }, {
     key: 'resume',
@@ -252,14 +269,10 @@ var StatefulDynterval = function () {
       this.state = STATES.resumed;
 
       setTimeout(this.pickup.bind(this), this.time.remaining);
-    }
-  }, {
-    key: 'pickup',
-    value: function pickup() {
-      if (this.state !== STATES.resumed) return;
 
-      this.next();
-      this.run();
+      this.emit('resume');
+
+      return this;
     }
   }, {
     key: 'clear',
@@ -267,6 +280,30 @@ var StatefulDynterval = function () {
       this.time.clock.clear();
 
       this.state = STATES.cleared;
+
+      this.emit('clear');
+
+      return this;
+    }
+  }, {
+    key: 'add',
+    value: function add(interval) {
+      if (!(interval instanceof StatefulDynterval)) {
+        throw new TypeError('Child intervals must be instances of StatefulDynterval');
+      }
+
+      this.subs.push(interval);
+
+      return this;
+    }
+  }, {
+    key: 'emit',
+    value: function emit(action) {
+      this.subs.forEach(function (sub) {
+        return sub[action]();
+      });
+
+      return this;
     }
   }, {
     key: 'context',
