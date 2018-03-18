@@ -4,9 +4,16 @@ import setDynterval from 'dynamic-interval'
 // TODO: consider integrating https://github.com/medikoo/event-emitter#unifyemitter1-emitter2-event-emitterunify
 export class StatefulDynterval {
 
-  constructor (step, wait, defer) {
+  constructor (step, config = {}, api = { setInterval, clearInterval }) {
+    if (config.constructor === Number) {
+      config = { wait: config }
+    }
+
+    const { wait, defer } = config
+
     this.step  = step
     this.wait  = wait
+    this.api   = api
     this.state = STATES.pristine
     this.time  = { start: null, end: null, remaining: null, clock: null }
     this.subs  = []
@@ -35,7 +42,7 @@ export class StatefulDynterval {
 
   run () {
     this.time.start = new Date()
-    this.time.clock = setDynterval(this.next.bind(this), this.context.wait) // TODO: play with just `this.context`
+    this.time.clock = setDynterval(this.next.bind(this), this.context.wait, this.api) // TODO: play with just `this.context`
     this.state = STATES.running
   }
 

@@ -8,6 +8,14 @@ const should = chai.should()
 chai.use(sinonChai)
 
 describe.only('StatefulDynterval', () => {
+  describe('api', () => {
+    it('should allow custom interval APIs to be provided', () => {
+      let interval = new StatefulDynterval(() => {}, 25, { setInterval: sinon.spy(), clearInterval: sinon.spy() })
+
+      interval.api.setInterval.should.have.been.called
+    })
+  })
+
   describe('run', () => {
     let interval, stepped
 
@@ -56,7 +64,7 @@ describe.only('StatefulDynterval', () => {
         console.log('[pause] stepping', config)
 
         return Object.assign({ wait: config.wait * 2 })
-      }, 50, true)
+      }, { wait: 50, defer: true })
     })
 
     afterEach(() => stepped = false)

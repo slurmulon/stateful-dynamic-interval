@@ -199,11 +199,25 @@ babelHelpers;
 // TODO: accept custom `setInterval` and `clearInterval`
 // TODO: consider integrating https://github.com/medikoo/event-emitter#unifyemitter1-emitter2-event-emitterunify
 var StatefulDynterval = function () {
-  function StatefulDynterval(step, wait, defer) {
+
+  // constructor (step, wait, defer) {
+  function StatefulDynterval(step) {
+    var config = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+    var api = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : { setInterval: setInterval, clearInterval: clearInterval };
     classCallCheck(this, StatefulDynterval);
+
+    if (config.constructor === Number) {
+      config = { wait: config };
+    }
+
+    var _config = config,
+        wait = _config.wait,
+        defer = _config.defer;
+
 
     this.step = step;
     this.wait = wait;
+    this.api = api;
     this.state = STATES.pristine;
     this.time = { start: null, end: null, remaining: null, clock: null };
     this.subs = [];
@@ -227,7 +241,7 @@ var StatefulDynterval = function () {
     key: 'run',
     value: function run() {
       this.time.start = new Date();
-      this.time.clock = setDynterval(this.next.bind(this), this.context.wait); // TODO: play with just `this.context`
+      this.time.clock = setDynterval(this.next.bind(this), this.context.wait, this.api); // TODO: play with just `this.context`
       this.state = STATES.running;
     }
   }, {
