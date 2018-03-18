@@ -1,5 +1,7 @@
 import setDynterval from 'dynamic-interval'
 
+// TODO: accept custom `setInterval` and `clearInterval`
+// TODO: consider integrating https://github.com/medikoo/event-emitter#unifyemitter1-emitter2-event-emitterunify
 export class StatefulDynterval {
 
   constructor (step, wait, defer) {
@@ -42,6 +44,8 @@ export class StatefulDynterval {
 
     this.next()
     this.run()
+
+    return this
   }
 
   // FIXME: if you pause too close to the next step the interval keeps going
@@ -58,6 +62,8 @@ export class StatefulDynterval {
     this.state = STATES.paused
 
     this.emit('pause')
+
+    return this
   }
 
   resume () {
@@ -68,6 +74,8 @@ export class StatefulDynterval {
     setTimeout(this.pickup.bind(this), this.time.remaining)
 
     this.emit('resume')
+
+    return this
   }
 
   clear () {
@@ -76,6 +84,8 @@ export class StatefulDynterval {
     this.state = STATES.cleared
 
     this.emit('clear')
+
+    return this
   }
 
   add (interval) {
@@ -90,6 +100,8 @@ export class StatefulDynterval {
 
   emit (action) {
     this.subs.forEach(sub => sub[action]())
+
+    return this
   }
 
 }
