@@ -210,4 +210,26 @@ describe('StatefulDynterval', () => {
     })
   })
 
+  describe('add', () => {
+    const intervals = {
+      parent: null,
+      child: null
+    }
+
+    const spawn = () => new StatefulDynterval(() => {}, 10)
+
+    it('should add children to the parent interval', () => {
+      intervals.parent = spawn()
+      intervals.child  = spawn()
+
+      intervals.parent.add(intervals.child)
+
+      intervals.parent.subs.should.contain(intervals.child)
+    })
+
+    it('should only allow instances of StatefulDynterval to be specified as children', () => {
+      (() => intervals.parent.add('invalid')).should.throw(TypeError, /Child intervals must be instances of StatefulDynterval/)
+    })
+  })
+
 })
