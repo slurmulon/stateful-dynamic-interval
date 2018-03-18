@@ -224,7 +224,7 @@ describe('StatefulDynterval', () => {
 
       intervals.parent.add(intervals.child)
 
-      intervals.parent.subs.should.contain(intervals.child)
+      intervals.parent.children.should.contain(intervals.child)
     })
 
     it('should only allow instances of StatefulDynterval to be specified as children', () => {

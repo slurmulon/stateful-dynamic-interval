@@ -15,7 +15,7 @@ export class StatefulDynterval {
     this.api   = api
     this.state = STATES.pristine
     this.time  = { start: null, end: null, remaining: null, clock: null }
-    this.subs  = []
+    this.children = []
 
     if (!defer) this.run()
   }
@@ -99,13 +99,13 @@ export class StatefulDynterval {
       throw TypeError('Child intervals must be instances of StatefulDynterval')
     }
 
-    this.subs.push(interval)
+    this.children.push(interval)
 
     return this
   }
 
   emit (key) {
-    this.subs.forEach(sub => {
+    this.children.forEach(sub => {
       const action = sub[key]
 
       if (!(action instanceof Function)) {

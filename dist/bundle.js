@@ -217,7 +217,7 @@ var StatefulDynterval = function () {
     this.api = api;
     this.state = STATES.pristine;
     this.time = { start: null, end: null, remaining: null, clock: null };
-    this.subs = [];
+    this.children = [];
 
     if (!defer) this.run();
   }
@@ -303,14 +303,14 @@ var StatefulDynterval = function () {
         throw TypeError('Child intervals must be instances of StatefulDynterval');
       }
 
-      this.subs.push(interval);
+      this.children.push(interval);
 
       return this;
     }
   }, {
     key: 'emit',
     value: function emit(key) {
-      this.subs.forEach(function (sub) {
+      this.children.forEach(function (sub) {
         var action = sub[key];
 
         if (!(action instanceof Function)) {
