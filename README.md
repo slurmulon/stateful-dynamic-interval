@@ -2,20 +2,30 @@
 > :clock1: Stateful dynamic interval
 ---
 
-A pauseable and resumeable timer built around [dynamic-interval](https://github.com/slurmulon/dynamic-interval)
+A pauseable and resumeable `setInterval` built around [dynamic-interval](https://github.com/slurmulon/dynamic-interval)
 
 ## Install
 
 `npm install --save slurmulon/stateful-dynamic-interval`
+
+then
+
+```js
+import setStatefulDynterval from 'stateful-dynamic-interval'
+```
+
+or
+
+```js
+import { StatefulDynterval } from 'stateful-dynamic-interval'
+```
 
 ## Usage
 
 ```js
 import { StatefulDynterval } from 'stateful-dynamic-interval'
 
-const step  = context => console.log('stepping', context)
-const wait  = 50
-const timer = new StatefulDynterval(step, wait)
+const timer = new StatefulDynterval(context => console.log('tick', context), 1000)
 
 timer.pause()
 // ...

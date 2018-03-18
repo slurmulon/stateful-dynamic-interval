@@ -1,7 +1,11 @@
 import chai from 'chai'
+import sinon from 'sinon'
+import sinonChai from 'sinon-chai'
 import { StatefulDynterval, STATES } from '../dist/bundle'
 
 const should = chai.should()
+
+chai.use(sinonChai)
 
 describe.only('StatefulDynterval', () => {
   describe('run', () => {
@@ -128,17 +132,73 @@ describe.only('StatefulDynterval', () => {
     // TODO/FIXME: support and test pausing a resume (tricky, might need to introduce `StatefulTimeout`)
   })
 
-  xdescribe('pickup', () => {
+  describe('pickup', () => {
+    let interval
+
     it('should only run when in the resumed state', () => {
+      interval = new StatefulDynterval(() => {}, 1000)
 
+      interval.state = null
+
+      should.not.exist(interval.pickup())
     })
 
-    it('should call the step function', () => {
+    it('should call the step (next) function', done => {
+      interval = new StatefulDynterval(() => {}, 10)
 
-    })
+      interval.next = sinon.spy()
 
-    it('should call the run function', () => {
+      interval.pause()
+      interval.resume()
 
+      setTimeout(() => {
+        interval.next.should.have.been.called
+
+        done()
+      }, 10)
+    }).timeout(25)
+
+    it('should call the run function', done => {
+      interval = new StatefulDynterval(() => {}, 10)
+
+      interval.run = sinon.spy()
+
+      interval.pause()
+      interval.resume()
+
+      setTimeout(() => {
+        interval.run.should.have.been.called
+
+        done()
+      }, 10)
+    }).timeout(25)
+  })
+
+  describe('emit', () => {
+    const intervals = {
+      parent: null,
+      childA: null,
+      childB: null
+    }
+
+    it('should fire events to any subscribers where the action (by string) is the method to call', () => {
+      const spawn = () => new StatefulDynterval(() => {}, 50)
+
+      intervals.parent = spawn()
+      intervals.childA = spawn()
+      intervals.childB = spawn()
+
+      intervals.childA.pause = sinon.spy()
+      intervals.childB.pause = sinon.spy()
+
+      intervals.parent
+        .add(intervals.childA)
+        .add(intervals.childB)
+
+      intervals.parent.emit('pause')
+
+      intervals.childA.pause.should.have.been.called
+      intervals.childB.pause.should.have.been.called
     })
   })
 
