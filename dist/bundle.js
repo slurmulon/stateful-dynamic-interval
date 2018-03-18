@@ -238,7 +238,7 @@ var StatefulDynterval = function () {
     key: 'run',
     value: function run() {
       this.time.start = new Date();
-      this.time.clock = setDynterval(this.next.bind(this), this.context.wait, this.api); // TODO: play with just `this.context`
+      this.time.clock = setDynterval(this.next.bind(this), this.context, this.api); // TODO: play with just `this.context`
       this.state = STATES.running;
     }
   }, {
@@ -300,7 +300,7 @@ var StatefulDynterval = function () {
     key: 'add',
     value: function add(interval) {
       if (!(interval instanceof StatefulDynterval)) {
-        throw new TypeError('Child intervals must be instances of StatefulDynterval');
+        throw TypeError('Child intervals must be instances of StatefulDynterval');
       }
 
       this.subs.push(interval);
@@ -309,9 +309,15 @@ var StatefulDynterval = function () {
     }
   }, {
     key: 'emit',
-    value: function emit(action) {
+    value: function emit(key) {
       this.subs.forEach(function (sub) {
-        return sub[action]();
+        var action = sub[key];
+
+        if (!(action instanceof Function)) {
+          throw Error('Invalid action key, must be the name of a method defined on StatefulDynterval');
+        }
+
+        sub[key]();
       });
 
       return this;

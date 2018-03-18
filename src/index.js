@@ -41,7 +41,7 @@ export class StatefulDynterval {
 
   run () {
     this.time.start = new Date()
-    this.time.clock = setDynterval(this.next.bind(this), this.context.wait, this.api) // TODO: play with just `this.context`
+    this.time.clock = setDynterval(this.next.bind(this), this.context, this.api) // TODO: play with just `this.context`
     this.state = STATES.running
   }
 
@@ -96,7 +96,7 @@ export class StatefulDynterval {
 
   add (interval) {
     if (!(interval instanceof StatefulDynterval)) {
-      throw new TypeError('Child intervals must be instances of StatefulDynterval')
+      throw TypeError('Child intervals must be instances of StatefulDynterval')
     }
 
     this.subs.push(interval)
@@ -104,8 +104,16 @@ export class StatefulDynterval {
     return this
   }
 
-  emit (action) {
-    this.subs.forEach(sub => sub[action]())
+  emit (key) {
+    this.subs.forEach(sub => {
+      const action = sub[key]
+
+      if (!(action instanceof Function)) {
+        throw Error('Invalid action key, must be the name of a method defined on StatefulDynterval')
+      }
+
+      sub[key]()
+    })
 
     return this
   }
