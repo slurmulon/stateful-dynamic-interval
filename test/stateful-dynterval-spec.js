@@ -174,4 +174,32 @@ describe.only('StatefulDynterval', () => {
     }).timeout(25)
   })
 
+  describe('emit', () => {
+    const intervals = {
+      parent: null,
+      childA: null,
+      childB: null
+    }
+
+    it('should fire events to any subscribers where the action (by string) is the method to call', () => {
+      const spawn = () => new StatefulDynterval(() => {}, 50)
+
+      intervals.parent = spawn()
+      intervals.childA = spawn()
+      intervals.childB = spawn()
+
+      intervals.childA.pause = sinon.spy()
+      intervals.childB.pause = sinon.spy()
+
+      intervals.parent
+        .add(intervals.childA)
+        .add(intervals.childB)
+
+      intervals.parent.emit('pause')
+
+      intervals.childA.pause.should.have.been.called
+      intervals.childB.pause.should.have.been.called
+    })
+  })
+
 })
