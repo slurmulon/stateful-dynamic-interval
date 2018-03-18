@@ -112,7 +112,7 @@ export class StatefulDynterval {
         throw Error('Invalid action key, must be the name of a method defined on StatefulDynterval')
       }
 
-      sub[key]()
+      action()
     })
 
     return this
