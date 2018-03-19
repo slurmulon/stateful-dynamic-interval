@@ -310,8 +310,8 @@ var StatefulDynterval = function () {
   }, {
     key: 'emit',
     value: function emit(key) {
-      this.children.forEach(function (sub) {
-        var action = sub[key];
+      this.children.forEach(function (child) {
+        var action = child[key];
 
         if (!(action instanceof Function)) {
           throw Error('Invalid action key, must be the name of a method defined on StatefulDynterval');

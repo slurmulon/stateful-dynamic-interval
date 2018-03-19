@@ -105,8 +105,8 @@ export class StatefulDynterval {
   }
 
   emit (key) {
-    this.children.forEach(sub => {
-      const action = sub[key]
+    this.children.forEach(child => {
+      const action = child[key]
 
       if (!(action instanceof Function)) {
         throw Error('Invalid action key, must be the name of a method defined on StatefulDynterval')
