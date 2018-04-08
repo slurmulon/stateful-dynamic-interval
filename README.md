@@ -1,5 +1,5 @@
 # stateful-dynamic-interval
-> :clock1: Stateful dynamic interval
+> :clock1: The stateful dynamic interval
 ---
 
 A pauseable and resumeable `setInterval` built around [dynamic-interval](https://github.com/slurmulon/dynamic-interval)

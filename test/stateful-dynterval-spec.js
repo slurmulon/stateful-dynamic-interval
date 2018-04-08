@@ -163,7 +163,7 @@ describe('StatefulDynterval', () => {
         interval.next.should.have.been.called
 
         done()
-      }, 10)
+      }, 19)
     }).timeout(25)
 
     it('should call the run function', done => {
