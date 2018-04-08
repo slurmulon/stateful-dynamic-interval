@@ -151,7 +151,7 @@ describe('StatefulDynterval', () => {
       should.not.exist(interval.pickup())
     })
 
-    it.only('should call the step (next) function', done => {
+    it('should call the step (next) function', done => {
       interval = new StatefulDynterval(() => {}, 10)
 
       interval.next = sinon.spy()
@@ -164,7 +164,7 @@ describe('StatefulDynterval', () => {
         interval.next.should.have.been.called
 
         done()
-      }, 10)
+      }, 19)
     }).timeout(25)
 
     it('should call the run function', done => {
