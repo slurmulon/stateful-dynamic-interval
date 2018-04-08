@@ -160,7 +160,6 @@ describe('StatefulDynterval', () => {
       interval.resume()
 
       setTimeout(() => {
-        console.log('NEXT CALL COUNT', interval.next.callCount)
         interval.next.should.have.been.called
 
         done()

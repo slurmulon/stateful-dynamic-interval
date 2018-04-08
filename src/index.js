@@ -42,7 +42,7 @@ export class StatefulDynterval {
 
   run () {
     this.time.start = now() //new Date()
-    this.time.clock = setDynterval(this.next.bind(this), this.context, this.api) // TODO: play with just `this.context`
+    this.time.clock = setDynterval(this.next.bind(this), this.context, this.api)
     this.state = STATES.running
 
     return this
@@ -64,7 +64,7 @@ export class StatefulDynterval {
 
     const { wait }  = this.context
     const { start } = this.time
-    const elapsed = now() - start //new Date() - this.time.start
+    const elapsed = now() - start
 
     this.time.remaining = wait - elapsed
     this.time.clock.clear()
