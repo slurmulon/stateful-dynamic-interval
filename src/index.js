@@ -34,14 +34,14 @@ export class StatefulDynterval {
 
     // TODO: can probably eliminate the need for this by supporting III (immediately invoked interval) in `dynamic-interval`
     // TODO: experiment with only doing this if `config` is `null`
-    this.time.start = now() //new Date()
+    this.time.start = now()
     this.time.clock.context = context || config
 
     return context
   }
 
   run () {
-    this.time.start = now() //new Date()
+    this.time.start = now()
     this.time.clock = setDynterval(this.next.bind(this), this.context, this.api)
     this.state = STATES.running
 
