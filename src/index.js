@@ -108,6 +108,12 @@ export class StatefulDynterval {
     return this
   }
 
+  detach () {
+    this.children = []
+
+    return this
+  }
+
   emit (key) {
     this.children.forEach(child => {
       const action = child[key]
