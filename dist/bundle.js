@@ -5,6 +5,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
 var setDynterval = _interopDefault(require('dynamic-interval'));
+var now = _interopDefault(require('performance-now'));
 
 var babelHelpers = {};
 
@@ -229,7 +230,7 @@ var StatefulDynterval = function () {
 
       // TODO: can probably eliminate the need for this by supporting III (immediately invoked interval) in `dynamic-interval`
       // TODO: experiment with only doing this if `config` is `null`
-      this.time.start = new Date();
+      this.time.start = now(); //new Date()
       this.time.clock.context = context || config;
 
       return context;
@@ -237,9 +238,11 @@ var StatefulDynterval = function () {
   }, {
     key: 'run',
     value: function run() {
-      this.time.start = new Date();
+      this.time.start = now(); //new Date()
       this.time.clock = setDynterval(this.next.bind(this), this.context, this.api); // TODO: play with just `this.context`
       this.state = STATES.running;
+
+      return this;
     }
   }, {
     key: 'pickup',
@@ -261,7 +264,9 @@ var StatefulDynterval = function () {
       if (this.state !== STATES.running) return;
 
       var wait = this.context.wait;
-      var elapsed = new Date() - this.time.start;
+      var start = this.time.start;
+
+      var elapsed = now() - start; //new Date() - this.time.start
 
       this.time.remaining = wait - elapsed;
       this.time.clock.clear();
