@@ -2,6 +2,9 @@
 > :clock1: The stateful dynamic interval
 ---
 
+[![build](https://img.shields.io/circleci/project/github/RedSparr0w/node-csgo-parser.svg?style=for-the-badge)](https://circleci.com/gh/slurmulon/stateful-dynamic-interval)
+[![npm](https://img.shields.io/npm/v/stateful-dynamic-interval.svg?style=for-the-badge)](https://npmjs.com/package/stateful-dynamic-interval)
+
 A pauseable and resumeable `setInterval` built around [dynamic-interval](https://github.com/slurmulon/dynamic-interval)
 
 ## Install

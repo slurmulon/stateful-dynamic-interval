@@ -27,7 +27,7 @@
   },
   "homepage": "https://github.com/slurmulon/stateful-dynamic-interval#readme",
   "dependencies": {
-    "dynamic-interval": "slurmulon/dynamic-interval",
+    "dynamic-interval": "^1.2.0",
     "performance-now": "^2.1.0"
   },
   "devDependencies": {
