@@ -9,7 +9,7 @@ A pauseable and resumeable `setInterval` built around [dynamic-interval](https:/
 
 ## Install
 
-`npm install --save slurmulon/stateful-dynamic-interval`
+`npm install --save stateful-dynamic-interval`
 
 then
 
