@@ -11,9 +11,10 @@ export class StatefulDynterval {
 
     const { wait, defer } = config
 
-    this.step  = step
-    this.wait  = wait
-    this.api   = api
+    this.step = step
+    this.config = config
+    this.wait = wait
+    this.api = api
     this.state = STATES.pristine
     this.time  = { start: null, end: null, remaining: null, clock: null }
     this.children = []
@@ -26,7 +27,7 @@ export class StatefulDynterval {
       return Object.assign({}, this.time.clock.context)
     }
 
-    return { wait: this.wait, state: this.state }
+    return Object.assign({}, this.config, { state: this.state })
   }
 
   next (config) {
@@ -35,7 +36,7 @@ export class StatefulDynterval {
     // TODO: can probably eliminate the need for this by supporting III (immediately invoked interval) in `dynamic-interval`
     // TODO: experiment with only doing this if `config` is `null`
     this.time.start = now()
-    this.time.clock.context = context || config
+    // this.time.clock.context = context || config
 
     return context
   }
