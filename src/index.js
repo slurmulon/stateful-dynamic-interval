@@ -1,15 +1,18 @@
 import setDynterval from 'dynamic-interval'
 import now from 'performance-now'
+import EventEmitter from 'events'
 
 // TODO: consider integrating https://github.com/medikoo/event-emitter#unifyemitter1-emitter2-event-emitterunify
-export class StatefulDynterval {
+export class StatefulDynterval extends EventEmitter {
 
   constructor (step, config = {}, api = { setInterval, clearInterval, setTimeout, clearTimeout }) {
+    super()
+
     if (config.constructor === Number) {
       config = { wait: config }
     }
 
-    const { wait, immediate } = config
+    const { wait, lazy } = config
 
     this.step = step
     this.config = config
@@ -17,10 +20,10 @@ export class StatefulDynterval {
     this.api = api
     this.state = STATES.pristine
     this.time  = { start: null, end: null, remaining: null, clock: null }
-    this.children = []
+    this.children = new Set()
 
     // TODO: Consider this more
-    // if (immediate) this.run()
+    if (!lazy) this.run()
   }
 
   get context () {
@@ -43,11 +46,12 @@ export class StatefulDynterval {
     return this.run()
   }
 
-  // TODO: Make `play` an alias
   run () {
     this.time.start = now()
     this.time.clock = setDynterval(this.next.bind(this), this.context, this.api)
     this.state = STATES.running
+
+    this.emit('run')
 
     return this
   }
@@ -96,7 +100,6 @@ export class StatefulDynterval {
     return this.clear()
   }
 
-  // TODO: Make `stop` an alias
   clear () {
     this.time.clock.clear()
 
@@ -112,27 +115,17 @@ export class StatefulDynterval {
       throw TypeError('Child intervals must be instances of StatefulDynterval')
     }
 
-    this.children.push(interval)
+    const topics = ['run', 'clear', 'pause', 'resume']
+
+    topics.forEach(topic => this.on(topic, interval[topic]))
+
+    this.children.add(interval)
 
     return this
   }
 
   detach () {
-    this.children = []
-
-    return this
-  }
-
-  emit (key) {
-    this.children.forEach(child => {
-      const action = child[key]
-
-      if (!(action instanceof Function)) {
-        throw Error('Invalid action key, must be the name of a method defined on StatefulDynterval')
-      }
-
-      action()
-    })
+    this.children.clear()
 
     return this
   }
