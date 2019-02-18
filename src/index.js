@@ -1,24 +1,28 @@
 import setDynterval from 'dynamic-interval'
 import now from 'performance-now'
+import EventEmitter from 'events'
 
 // TODO: consider integrating https://github.com/medikoo/event-emitter#unifyemitter1-emitter2-event-emitterunify
-export class StatefulDynterval {
+export class StatefulDynterval extends EventEmitter {
 
   constructor (step, config = {}, api = { setInterval, clearInterval, setTimeout, clearTimeout }) {
+    super()
+
     if (config.constructor === Number) {
       config = { wait: config }
     }
 
-    const { wait, defer } = config
+    const { wait, lazy } = config
 
-    this.step  = step
-    this.wait  = wait
-    this.api   = api
+    this.step = step
+    this.config = config
+    this.wait = wait
+    this.api = api
     this.state = STATES.pristine
     this.time  = { start: null, end: null, remaining: null, clock: null }
-    this.children = []
+    this.children = new Set()
 
-    if (!defer) this.run()
+    if (!lazy) this.run()
   }
 
   get context () {
@@ -26,24 +30,27 @@ export class StatefulDynterval {
       return Object.assign({}, this.time.clock.context)
     }
 
-    return { wait: this.wait, state: this.state }
+    return Object.assign({}, this.config, { state: this.state })
   }
 
   next (config) {
     const context = this.step(config)
 
-    // TODO: can probably eliminate the need for this by supporting III (immediately invoked interval) in `dynamic-interval`
-    // TODO: experiment with only doing this if `config` is `null`
     this.time.start = now()
-    this.time.clock.context = context || config
 
     return context
+  }
+
+  play () {
+    return this.run()
   }
 
   run () {
     this.time.start = now()
     this.time.clock = setDynterval(this.next.bind(this), this.context, this.api)
     this.state = STATES.running
+
+    this.emit('run')
 
     return this
   }
@@ -88,6 +95,10 @@ export class StatefulDynterval {
     return this
   }
 
+  stop () {
+    return this.clear()
+  }
+
   clear () {
     this.time.clock.clear()
 
@@ -103,27 +114,19 @@ export class StatefulDynterval {
       throw TypeError('Child intervals must be instances of StatefulDynterval')
     }
 
-    this.children.push(interval)
+
+    TOPICS.forEach(topic => this.on(topic, interval[topic]))
+    this.children.add(interval)
 
     return this
   }
 
   detach () {
-    this.children = []
-
-    return this
-  }
-
-  emit (key) {
     this.children.forEach(child => {
-      const action = child[key]
-
-      if (!(action instanceof Function)) {
-        throw Error('Invalid action key, must be the name of a method defined on StatefulDynterval')
-      }
-
-      action()
+      TOPICS.forEach(topic => this.off(topic, child[topic]))
     })
+
+    this.children.clear()
 
     return this
   }
@@ -132,6 +135,8 @@ export class StatefulDynterval {
 
 export const setStatefulDynterval = (...args) => new StatefulDynterval(...args)
 
+export const TOPICS = ['run', 'clear', 'pause', 'resume']
+
 export const STATES = {
   pristine : Symbol('pristine'),
   running  : Symbol('running'),
@@ -139,3 +144,5 @@ export const STATES = {
   resumed  : Symbol('resumed'),
   cleared  : Symbol('cleared')
 }
+
+export default setStatefulDynterval

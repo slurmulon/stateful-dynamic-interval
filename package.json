@@ -1,6 +1,6 @@
 {
   "name": "stateful-dynamic-interval",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Stateful Dynterval",
   "main": "dist/bundle.js",
   "scripts": {
@@ -27,7 +27,7 @@
   },
   "homepage": "https://github.com/slurmulon/stateful-dynamic-interval#readme",
   "dependencies": {
-    "dynamic-interval": "^1.2.0",
+    "dynamic-interval": "^1.2.1",
     "performance-now": "^2.1.0"
   },
   "devDependencies": {
