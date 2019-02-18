@@ -35,6 +35,10 @@ timer.pause()
 timer.resume()
 ```
 
+You may also customize the underlying timer and can change the duration of the interval on each tick.
+
+Check out the [`dynamic-interval` package](https://github.com/slurmulon/dynamic-interval#advanced) for more details.
+
 ## Example
 
 This script doubles the amount of time between intervals on each iteration, starting with 50ms.
@@ -56,29 +60,35 @@ setTimeout(() => {
 }, 1000)
 ```
 
-## Interface 
+## Interface
 
-### `run()`
+### ```setStatefulDynterval(step, config, api)```
+
+ - `step`: The function to call on each interval tick
+ - `config`: A [`dynamic-interval` configuration object](https://github.com/slurmulon/dynamic-interval#config)
+ - `api` An optional custom [timing API](https://github.com/slurmulon/dynamic-interval#api)
+
+### `.run()`
 
 Starts the interval. Instantiated `StatefulDyntervals` will automatically call `run` unless the `lazy` config property is set to `true`.
 
-`play` is an alias method.
+ - **Alias**: `play`
 
-### `clear()`
+### `.clear()`
 
 Stops or clears out the interval. Once an interval has been cleared it cannot be resumed.
 
-`stop` is an alias method.
+ - **Alias**: `stop`
 
-### `pause()`
+### `.pause()`
 
 Pauses the interval so that it can be resumed at a later point.
 
-### `resume()`
+### `.resume()`
 
 Resumes a previously paused interval.
 
-### `add(interval)`
+### `.add(interval)`
 
 Synchronizes the parent interval with a child interval.
 
@@ -89,7 +99,7 @@ Child intervals automatically subscribe to the following topics of their parents
  - `pause`
  - `resume`
 
-### `detach`
+### `.detach()`
 
 Desynchronizes a parent interval from all of its children by unsubscribing them from their parent topics.
 
