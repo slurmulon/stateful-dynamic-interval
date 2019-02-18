@@ -39,6 +39,10 @@ export class StatefulDynterval {
     return context
   }
 
+  play () {
+    return this.run()
+  }
+
   // TODO: Make `play` an alias
   run () {
     this.time.start = now()
@@ -86,6 +90,10 @@ export class StatefulDynterval {
     this.emit('resume')
 
     return this
+  }
+
+  stop () {
+    return this.clear()
   }
 
   // TODO: Make `stop` an alias
