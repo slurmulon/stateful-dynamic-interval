@@ -22,7 +22,6 @@ export class StatefulDynterval extends EventEmitter {
     this.time  = { start: null, end: null, remaining: null, clock: null }
     this.children = new Set()
 
-    // TODO: Consider this more
     if (!lazy) this.run()
   }
 
@@ -141,3 +140,5 @@ export const STATES = {
   resumed  : Symbol('resumed'),
   cleared  : Symbol('cleared')
 }
+
+export default setStatefulDynterval
