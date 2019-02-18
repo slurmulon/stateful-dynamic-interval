@@ -114,16 +114,15 @@ export class StatefulDynterval extends EventEmitter {
       throw TypeError('Child intervals must be instances of StatefulDynterval')
     }
 
-    const topics = ['run', 'clear', 'pause', 'resume']
 
-    topics.forEach(topic => this.on(topic, interval[topic]))
-
+    TOPICS.forEach(topic => this.on(topic, interval[topic]))
     this.children.add(interval)
 
     return this
   }
 
   detach () {
+    this.children.forEach(child => this.off(topic, child[topic]))
     this.children.clear()
 
     return this
@@ -132,6 +131,8 @@ export class StatefulDynterval extends EventEmitter {
 }
 
 export const setStatefulDynterval = (...args) => new StatefulDynterval(...args)
+
+export const TOPICS = ['run', 'clear', 'pause', 'resume']
 
 export const STATES = {
   pristine : Symbol('pristine'),
