@@ -64,7 +64,7 @@ describe('StatefulDynterval', () => {
         console.log('[pause] stepping', config)
 
         return Object.assign({ wait: config.wait * 2 })
-      }, { wait: 50, defer: true })
+      }, { wait: 50, lazy: true })
     })
 
     afterEach(() => stepped = false)
