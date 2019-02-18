@@ -56,6 +56,43 @@ setTimeout(() => {
 }, 1000)
 ```
 
+## Interface 
+
+### `run()`
+
+Starts the interval. Instantiated `StatefulDyntervals` will automatically call `run` unless the `lazy` config property is set to `true`.
+
+`play` is an alias method.
+
+### `clear()`
+
+Stops or clears out the interval. Once an interval has been cleared it cannot be resumed.
+
+`stop` is an alias method.
+
+### `pause()`
+
+Pauses the interval so that it can be resumed at a later point.
+
+### `resume()`
+
+Resumes a previously paused interval.
+
+### `add(interval)`
+
+Synchronizes the parent interval with a child interval.
+
+Child intervals automatically subscribe to the following topics of their parents:
+
+ - `run`
+ - `clear`
+ - `pause`
+ - `resume`
+
+### `detach`
+
+Desynchronizes a parent interval from all of its children by unsubscribing them from their parent topics.
+
 ## License
 
 MIT
