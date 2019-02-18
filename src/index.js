@@ -114,7 +114,6 @@ export class StatefulDynterval extends EventEmitter {
       throw TypeError('Child intervals must be instances of StatefulDynterval')
     }
 
-
     TOPICS.forEach(topic => this.on(topic, interval[topic]))
     this.children.add(interval)
 
