@@ -19,9 +19,8 @@ export class StatefulDynterval {
     this.time  = { start: null, end: null, remaining: null, clock: null }
     this.children = []
 
-    // TODO: Deprecate `defer`. Handled by `immediate` in `dynamic-interval`
-    // TODO: Consider always running and just passing immediate to `dynamic-interval`
-    if (!defer) this.run()
+    // TODO: Consider this more
+    // if (immediate) this.run()
   }
 
   get context () {
