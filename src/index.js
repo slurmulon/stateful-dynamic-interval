@@ -122,7 +122,10 @@ export class StatefulDynterval extends EventEmitter {
   }
 
   detach () {
-    this.children.forEach(child => this.off(topic, child[topic]))
+    this.children.forEach(child => {
+      TOPICS.forEach(topic => this.off(topic, child[topic]))
+    })
+
     this.children.clear()
 
     return this
