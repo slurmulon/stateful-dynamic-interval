@@ -9,7 +9,7 @@ export class StatefulDynterval {
       config = { wait: config }
     }
 
-    const { wait, defer } = config
+    const { wait, immediate } = config
 
     this.step = step
     this.config = config
@@ -19,6 +19,8 @@ export class StatefulDynterval {
     this.time  = { start: null, end: null, remaining: null, clock: null }
     this.children = []
 
+    // TODO: Deprecate `defer`. Handled by `immediate` in `dynamic-interval`
+    // TODO: Consider always running and just passing immediate to `dynamic-interval`
     if (!defer) this.run()
   }
 
@@ -33,14 +35,12 @@ export class StatefulDynterval {
   next (config) {
     const context = this.step(config)
 
-    // TODO: can probably eliminate the need for this by supporting III (immediately invoked interval) in `dynamic-interval`
-    // TODO: experiment with only doing this if `config` is `null`
     this.time.start = now()
-    // this.time.clock.context = context || config
 
     return context
   }
 
+  // TODO: Make `play` an alias
   run () {
     this.time.start = now()
     this.time.clock = setDynterval(this.next.bind(this), this.context, this.api)
@@ -89,6 +89,7 @@ export class StatefulDynterval {
     return this
   }
 
+  // TODO: Make `stop` an alias
   clear () {
     this.time.clock.clear()
 
