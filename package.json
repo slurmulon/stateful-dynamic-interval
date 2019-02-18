@@ -1,6 +1,6 @@
 {
   "name": "stateful-dynamic-interval",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Stateful Dynterval",
   "main": "dist/bundle.js",
   "scripts": {
