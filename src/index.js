@@ -8,7 +8,7 @@ export class StatefulDynterval extends EventEmitter {
   constructor (step, config = {}, api = { setInterval, clearInterval, setTimeout, clearTimeout }) {
     super()
 
-    if (config.constructor === Number) {
+    if (!Number.isNaN(config)) {
       config = { wait: config }
     }
 
